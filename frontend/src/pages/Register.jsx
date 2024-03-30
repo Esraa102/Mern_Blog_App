@@ -1,23 +1,25 @@
 import { Link } from "react-router-dom";
 import { AuthForm } from "../components";
 import toast from "react-hot-toast";
-import axios from "axios";
+// import axios from "axios";
 const Register = () => {
   const sendData = async (userInfo) => {
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/register`,
-        {
-          username: userInfo.username,
-          email: userInfo.email,
-          password: userInfo.password,
-        }
-      );
-      console.log(data);
-      toast.success("Created Successfully");
-    } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: userInfo.username,
+        email: userInfo.email,
+        password: userInfo.password,
+      }),
+    });
+    const data = await response.json();
+    if (data.message) {
+      toast.error(data.message);
+    } else {
+      toast.success("User Created Sucessfully");
     }
   };
   return (
