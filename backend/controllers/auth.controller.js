@@ -15,10 +15,13 @@ const registerUser = async (req, res, next) => {
         email,
         password: hashedPassword,
       });
+      const { password: encryptedPassword, ...rest } = newUser._doc;
       if (!newUser) {
         next(customError(res.status(400), "Invalid Inputs"));
       } else {
-        res.status(201).json({ newUser });
+        res.status(201).json({
+          newUser: rest,
+        });
       }
     }
   } catch (error) {
@@ -31,7 +34,7 @@ const loginUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      next(customError(404, "User Not Found"));
+      next(customError(401, "User Is Unauthenticated"));
     } else {
       // compare password with encrypted password
       if (await bcryptjs.compare(password, user.password)) {

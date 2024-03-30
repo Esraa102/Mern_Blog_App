@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { AuthForm } from "../components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const sendData = async (userInfo) => {
     setLoading(true);
     try {
@@ -23,6 +24,7 @@ const Login = () => {
         toast.error(data.message);
       } else {
         toast.success("Logged In Successfully");
+        navigate("/");
       }
       setLoading(false);
     } catch (error) {
