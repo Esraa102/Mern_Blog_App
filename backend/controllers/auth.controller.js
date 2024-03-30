@@ -1,11 +1,13 @@
 import { User } from "../models/user.model.js";
+import { customError } from "../utils/customError.js";
 import bcryptjs from "bcryptjs";
-const registerUser = async (req, res) => {
+
+const registerUser = async (req, res, next) => {
   const { username, email, password } = req.body;
   try {
     const user = await User.findOne({ email });
     if (user) {
-      res.status(400).json({ error: "User Is Already Exist" });
+      next(customError(res.status(400), "User Is Already Exist"));
     } else {
       const hashedPassword = bcryptjs.hashSync(password, 10);
       const newUser = await User.create({
@@ -14,15 +16,13 @@ const registerUser = async (req, res) => {
         password: hashedPassword,
       });
       if (!newUser) {
-        res.status(400).json({ error: "Invalid inputs" });
-        throw new Error("Invalid inputs");
+        next(customError(res.status(400), "Invalid Inputs"));
       } else {
         res.status(201).json({ newUser });
       }
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message });
+    next(customError(500, error.message));
   }
 };
 
