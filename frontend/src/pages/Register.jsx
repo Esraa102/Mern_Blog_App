@@ -1,7 +1,25 @@
 import { Link } from "react-router-dom";
 import { AuthForm } from "../components";
-
+import toast from "react-hot-toast";
+import axios from "axios";
 const Register = () => {
+  const sendData = async (userInfo) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
+        {
+          username: userInfo.username,
+          email: userInfo.email,
+          password: userInfo.password,
+        }
+      );
+      console.log(data);
+      toast.success("Created Successfully");
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  };
   return (
     <section>
       <div className="section-container">
@@ -11,7 +29,7 @@ const Register = () => {
         <p className="text-center text-gray-300 mb-8">
           Please Enter Your Details To Create A New Account
         </p>
-        <AuthForm isCreate />
+        <AuthForm isCreate sendToServer={sendData} />
         <p className="text-center mt-3">
           Already Have An Account?{" "}
           <Link

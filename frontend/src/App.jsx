@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Home, Login, Profile, Register } from "./pages";
 import { Header, Footer } from "./components";
+import { Toaster } from "react-hot-toast";
 function App() {
   return (
     <>
@@ -12,6 +13,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>
+        <Toaster />
       </div>
       <Footer />
     </>

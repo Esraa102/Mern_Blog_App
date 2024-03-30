@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-const AuthForm = ({ isCreate }) => {
+const AuthForm = ({ isCreate, sendToServer }) => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -46,7 +46,7 @@ const AuthForm = ({ isCreate }) => {
   };
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formData);
+      sendToServer(formData);
     } else {
       console.log(formErrors);
     }
@@ -54,7 +54,7 @@ const AuthForm = ({ isCreate }) => {
   return (
     <form
       onSubmit={onSubmitHandler}
-      className="flex flex-col gap-3 w-full md:w-[70%] mx-auto p-4 rounded-md bg-[#1E293B]"
+      className="flex flex-col gap-3 w-full md:w-[60%] mx-auto p-4 rounded-md bg-[#1E293B]"
     >
       {isCreate && (
         <div className="flex flex-col gap-3">
