@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-const AuthForm = ({ isCreate, sendToServer }) => {
+const AuthForm = ({ isCreate, sendToServer, loading }) => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -58,7 +58,7 @@ const AuthForm = ({ isCreate, sendToServer }) => {
     >
       {isCreate && (
         <div className="flex flex-col gap-3">
-          <label htmlFor="username" className="text-lg font-semibold">
+          <label htmlFor="username" className="md:text-lg font-semibold">
             UserName
           </label>
           <input
@@ -76,7 +76,7 @@ const AuthForm = ({ isCreate, sendToServer }) => {
         </div>
       )}
       <div className="flex flex-col gap-3">
-        <label htmlFor="email" className="text-lg font-semibold">
+        <label htmlFor="email" className="md:text-lg font-semibold">
           Email
         </label>
         <input
@@ -92,7 +92,7 @@ const AuthForm = ({ isCreate, sendToServer }) => {
         <p className="text-sm text-[#f00] -mt-2 pl-2">{formErrors.emailErr}</p>
       </div>
       <div className="flex flex-col gap-3">
-        <label htmlFor="pass" className="text-lg font-semibold">
+        <label htmlFor="pass" className="md:text-lg font-semibold">
           Password
         </label>
         <input
@@ -111,7 +111,7 @@ const AuthForm = ({ isCreate, sendToServer }) => {
       </div>
       {isCreate && (
         <div className="flex flex-col gap-3">
-          <label htmlFor="re-password" className="text-lg font-semibold">
+          <label htmlFor="re-password" className="md:text-lg font-semibold">
             Confirm Password
           </label>
           <input
@@ -129,8 +129,15 @@ const AuthForm = ({ isCreate, sendToServer }) => {
           </p>
         </div>
       )}
-      <button type="submit" className="main-btn">
-        {isCreate ? "Create Account" : "Sign In"}
+      <button
+        type="submit"
+        className={`main-btn ${loading && "cursor-not-allowed opacity-70"}`}
+        disabled={loading}
+      >
+        {isCreate && !loading && "Create Account"}
+        {isCreate && loading && "Creating..."}
+        {!isCreate && !loading && "Sign In"}
+        {!isCreate && loading && "Signing In..."}
       </button>
       <button
         type="button"

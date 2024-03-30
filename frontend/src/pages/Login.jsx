@@ -5,10 +5,10 @@ const Login = () => {
   return (
     <section>
       <div className="section-container">
-        <h1 className="text-center text-3xl text-main font-bold mb-4">
+        <h1 className="text-center text-2xl md:text-3xl text-main font-bold mb-4">
           Welcome Back!
         </h1>
-        <p className="text-center text-gray-300 mb-8">
+        <p className="text-center text-sm md:text-lg text-gray-300 mb-8">
           Please Enter Your Details To Log In
         </p>
         <AuthForm isCreate={false} />
