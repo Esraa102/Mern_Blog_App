@@ -1,4 +1,4 @@
 export const navbarLinks = [
   { router: "/", name: "Home" },
-  { router: "/login", name: "Sign In" },
+  // { router: "/login", name: "Sign In" },
 ];

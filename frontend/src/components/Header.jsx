@@ -1,8 +1,9 @@
 import { Link, NavLink } from "react-router-dom";
 import { navbarLinks } from "../constants";
-
+import { useSelector } from "react-redux";
+import LogOut from "./LogOut";
 const Header = () => {
-  const user = null;
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <header className="text-white fixed backdrop-blur-md top-0 left-0 w-full">
       <div className="container mx-auto py-6 px-4 flex gap-4 items-center justify-between">
@@ -26,10 +27,24 @@ const Header = () => {
               </li>
             ))}
           </ul>
-          {user && (
-            <Link to={"/profile/"}>
+          {currentUser ? (
+            <LogOut />
+          ) : (
+            <NavLink
+              to={"/login"}
+              className={({ isActive }) =>
+                `text-lg font-semibold hover:text-main transition ${
+                  isActive && "text-main"
+                }`
+              }
+            >
+              Sign In
+            </NavLink>
+          )}
+          {currentUser && (
+            <Link to={`/profile/${currentUser._id}`}>
               <img
-                src=""
+                src={currentUser.imgProfile || "/assets/user.png"}
                 alt="profile-img"
                 className="w-[55px] h-[55px] rounded-full"
               />
