@@ -1,12 +1,19 @@
-import { useState } from "react";
 import { AuthForm } from "../components";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+} from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 const Login = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const sendData = async (userInfo) => {
-    setLoading(true);
+    dispatch(loginStart());
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -21,16 +28,17 @@ const Login = () => {
       const data = await response.json();
       console.log(data);
       if (data.message) {
-        toast.error(data.message);
+        toast.error(data.message || "Something Went Wrong");
+        dispatch(loginFailure());
       } else {
+        dispatch(loginSuccess(data.user));
         toast.success("Logged In Successfully");
         navigate("/");
       }
-      setLoading(false);
     } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
+      console.log(error.message);
+      toast.error(error.message || "Something Went Wrong");
+      dispatch(loginFailure());
     }
   };
   return (

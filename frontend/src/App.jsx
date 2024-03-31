@@ -2,7 +2,10 @@ import { Routes, Route } from "react-router-dom";
 import { Home, Login, Profile, Register } from "./pages";
 import { Header, Footer } from "./components";
 import { Toaster } from "react-hot-toast";
+import { useCookies } from "react-cookie";
 function App() {
+  const [cookies] = useCookies(["access_token"]);
+  console.log("cookies", cookies);
   return (
     <>
       <Header />
