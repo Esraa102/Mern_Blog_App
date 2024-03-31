@@ -15,13 +15,29 @@ const registerUser = async (req, res, next) => {
         email,
         password: hashedPassword,
       });
-      const { password: encryptedPassword, ...rest } = newUser._doc;
       if (!newUser) {
         next(customError(res.status(400), "Invalid Inputs"));
       } else {
-        res.status(201).json({
-          newUser: rest,
-        });
+        const { password: encryptedPassword, ...rest } = newUser._doc;
+        const accessToken = jwt.sign(
+          {
+            _id: newUser._id,
+            username: newUser.username,
+            email: newUser.email,
+            password: hashedPassword,
+          },
+          process.env.ACCESS_TOKEN_SECRET
+        );
+        const expiresData = new Date(Date.now() + 3600000); // 1hour
+        res
+          .cookie("access_token", accessToken, {
+            httpOnly: true,
+            expires: expiresData,
+          })
+          .status(200)
+          .json({
+            newUser: rest,
+          });
       }
     }
   } catch (error) {
