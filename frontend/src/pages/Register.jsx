@@ -1,12 +1,18 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthForm } from "../components";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  registerStart,
+  registerSuccess,
+  registerFailure,
+} from "../redux/user/userSlice";
 const Register = () => {
-  const [loading, setLoading] = useState(false);
+  const { loading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const sendData = async (userInfo) => {
-    setLoading(true);
+    dispatch(registerStart());
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
@@ -20,17 +26,19 @@ const Register = () => {
         }),
       });
       const data = await response.json();
+      console.log(data);
       if (data.message) {
+        dispatch(registerFailure());
         toast.error(data.message);
       } else {
+        dispatch(registerSuccess(data.newUser));
         toast.success("User Signed Up Sucessfully");
-        navigate("/login");
+        navigate("/");
       }
-      setLoading(false);
     } catch (error) {
+      dispatch(registerFailure());
       console.log(error);
-    } finally {
-      setLoading(false);
+      toast.error(error.message);
     }
   };
   return (
