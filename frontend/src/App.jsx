@@ -1,20 +1,25 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Home, Login, Profile, Register } from "./pages";
 import { Header, Footer } from "./components";
 import { Toaster } from "react-hot-toast";
-import { useCookies } from "react-cookie";
+import { useSelector } from "react-redux";
 function App() {
-  const [cookies] = useCookies(["access_token"]);
-  console.log("cookies", cookies);
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <>
       <Header />
       <div className="bg-[#0B1120] min-h-screen text-white transition-all">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile/:id" element={<Profile />} />
+          <Route
+            path="/profile/:id"
+            element={currentUser ? <Profile /> : <Navigate to={"/login"} />}
+          />
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={!currentUser ? <Login /> : <Navigate to={"/"} />}
+          />
         </Routes>
         <Toaster />
       </div>
