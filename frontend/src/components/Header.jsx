@@ -44,7 +44,7 @@ const Header = () => {
           {currentUser && (
             <Link to={`/profile/${currentUser._id}`}>
               <img
-                src={currentUser.imgProfile || "/assets/user.png"}
+                src={currentUser.imgProfile}
                 alt="profile-img"
                 className="w-[55px] h-[55px] rounded-full"
               />
