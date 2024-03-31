@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
+import { OAuth } from ".";
+
 const AuthForm = ({ isCreate, sendToServer, loading }) => {
   const [formData, setFormData] = useState({
     username: "",
@@ -139,12 +141,7 @@ const AuthForm = ({ isCreate, sendToServer, loading }) => {
         {!isCreate && !loading && "Sign In"}
         {!isCreate && loading && "Signing In..."}
       </button>
-      <button
-        type="button"
-        className="main-btn bg-red-600 border-red-600 hover:text-red-600"
-      >
-        Continue With Google
-      </button>
+      <OAuth />
     </form>
   );
 };
