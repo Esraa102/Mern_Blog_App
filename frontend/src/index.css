@@ -7,7 +7,7 @@
     @apply container mx-auto pt-[100px] px-4 pb-[40px];
   }
   .main-btn {
-    @apply px-4 py-2 text-center rounded-md block mt-4 text-sm sm:text-lg md:text-xl 
+    @apply px-4 py-2 text-center rounded-md block mt-4 text-lg md:text-xl 
     font-semibold bg-main border border-main
     hover:bg-transparent hover:text-main transition;
   }
