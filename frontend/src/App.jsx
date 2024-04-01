@@ -16,10 +16,7 @@ function App() {
             element={currentUser ? <Profile /> : <Navigate to={"/login"} />}
           />
           <Route path="/register" element={<Register />} />
-          <Route
-            path="/login"
-            element={!currentUser ? <Login /> : <Navigate to={"/"} />}
-          />
+          <Route path="/login" element={<Login />} />
         </Routes>
         <Toaster />
       </div>

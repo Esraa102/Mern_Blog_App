@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 const UploadPhoto = ({ imgData, setImgData, formData, setFormData }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadSucess, setUploadSucess] = useState(false);
+
   const handleFileUpload = async (img) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + img.name;

@@ -1,12 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { LogOut, UploadPhoto } from "../components";
+import {
+  updateUserFailure,
+  updateUserStart,
+  updateUserSuccess,
+} from "../redux/user/userSlice";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [imgData, setImgData] = useState(currentUser.imgProfile);
+  const [isSumbit, setIsSubmit] = useState(false);
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     imgProfile: currentUser.imgProfile,
     username: currentUser.username,
@@ -36,8 +44,10 @@ const Profile = () => {
   const onSumbitHandler = (e) => {
     e.preventDefault();
     setErrors(validateForm(formData));
+    setIsSubmit(true);
   };
   const sendDataToServer = async () => {
+    dispatch(updateUserStart());
     try {
       const response = await fetch(`/api/users/update/${currentUser._id}`, {
         method: "POST",
@@ -47,25 +57,28 @@ const Profile = () => {
         body: JSON.stringify({
           username: formData.username,
           imgProfile: formData.imgProfile,
-          password: formData.password || null,
+          password: formData.password.length > 0 ? formData.password : null,
         }),
       });
-      const { data } = await response.json();
+      const data = await response.json();
 
       if (data.message) {
+        dispatch(updateUserFailure());
         toast.error(data.message);
       } else {
+        dispatch(updateUserSuccess(data.userData));
         toast.success("Profile Updated Successfully");
         console.log(data);
       }
     } catch (error) {
+      dispatch(updateUserFailure());
       console.log(error);
       toast.error(error.message);
     }
   };
   useEffect(() => {
-    if (Object.keys(errors).length === 0) {
-      console.log(formData);
+    if (Object.keys(errors).length === 0 && isSumbit) {
+      sendDataToServer();
     } else {
       console.log(errors);
     }
@@ -123,7 +136,13 @@ const Profile = () => {
             <p className="text-sm text-red-700 -mt-4 font-semibold">
               {errors.confirmPassErr}
             </p>
-            <button type="submit" className="main-btn mx-auto w-full mt-0">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`main-btn mx-auto w-full mt-0 ${
+                loading && "cursor-not-allowed opacity-50"
+              }`}
+            >
               Update Profile
             </button>
           </form>
