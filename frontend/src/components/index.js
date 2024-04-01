@@ -4,4 +4,6 @@ import AuthForm from "./AuthForm";
 import LogOut from "./LogOut";
 import OAuth from "./OAuth";
 import UploadPhoto from "./UploadPhoto";
-export { Header, Footer, AuthForm, LogOut, OAuth, UploadPhoto };
+import DeleteAccount from "./DeleteAccount";
+
+export { Header, Footer, AuthForm, LogOut, OAuth, UploadPhoto, DeleteAccount };

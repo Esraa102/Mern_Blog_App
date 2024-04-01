@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 function App() {
   const { currentUser } = useSelector((state) => state.user);
+
   return (
     <>
       <Header />
@@ -13,7 +14,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route
             path="/profile/:id"
-            element={currentUser ? <Profile /> : <Navigate to={"/login"} />}
+            element={currentUser ? <Profile /> : <Navigate to="/login" />}
           />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

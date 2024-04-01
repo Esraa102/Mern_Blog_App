@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { LogOut, UploadPhoto } from "../components";
+import { DeleteAccount, LogOut, UploadPhoto } from "../components";
 import {
   updateUserFailure,
   updateUserStart,
@@ -147,12 +147,7 @@ const Profile = () => {
             </button>
           </form>
           <div className="flex items-center flex-wrap gap-6 justify-between">
-            <button
-              type="button"
-              className="main-btn mt-0 bg-red-700 border-red-700 hover:text-red-700"
-            >
-              Delete Account
-            </button>
+            <DeleteAccount />
             <LogOut />
           </div>
         </div>
